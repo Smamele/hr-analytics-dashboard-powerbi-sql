@@ -13,14 +13,14 @@ GROUP BY Department
 Order BY Average_Salary DESC;
 
 --Question 3 — Which Department Has the Highest Attrition?--
-SELECT TOP 1 Department,
+SELECT Department,
        COUNT(*) AS Employees_Left
 FROM HRData
 WHERE Attrition = 1
 GROUP BY Department
 ORDER BY Employees_Left DESC;
 
---Question 4 — Top 5 Highest Paying Job Roles--
+--Question 4 — Top 5 Job Roles by Average Salary--
 SELECT TOP 5 JobRole,
        AVG(MonthlySalary) AS Average_Salary
 FROM HRdata
@@ -130,12 +130,11 @@ FROM HRData
 GROUP BY Gender;
 
 --Question 14 — Attrition Rate by Employment Type--
-SELECT EmploymentType,
-       COUNT(*) AS Employees_Left
+SELECT
+EmploymentType,
+COUNT(CASE WHEN Attrition=1 THEN 1 END)*100.0/COUNT(*) AS Attrition_Rate
 FROM HRData
-WHERE Attrition = 1
-GROUP BY EmploymentType
-ORDER BY Employees_Left DESC;
+GROUP BY EmploymentType;
 
 --Question 15 — Employees With More Than 10 Years at the Company--
 SELECT EmployeeID,
@@ -179,7 +178,7 @@ WHERE PerformanceRating = 'Excellent'
 AND YearsAtCompany >= 5
 AND PromotionLast3Years = 0;
 
---Question 20 — Revenue-Style HR Analysis: Department Performance Ranking--
+--Question 20 — Department Performance Ranking--
 WITH DepartmentPerformanceData AS
 (
     SELECT Department,
